@@ -1,0 +1,21 @@
+{
+  "title": "Result form",
+  "type": "object",
+  "properties": {
+    "name": {
+      "title": "name",
+      "type": "string",
+      "default": "test"
+    },
+    "age": {
+      "title": "age",
+      "type": "number",
+      "default": "15"
+    },
+    "sex": {
+      "title": "sex",
+      "type": "boolean",
+      "default": "true"
+    }
+  }
+}
