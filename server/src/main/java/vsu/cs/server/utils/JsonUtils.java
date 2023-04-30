@@ -14,13 +14,20 @@ public class JsonUtils {
         ObjectMapper objectMapper = new ObjectMapper();
         StringBuilder stringBuilder = new StringBuilder();
 
+        int level = 1;
+
         stringBuilder.append("{\n");
+        stringBuilder.append("\t".repeat(level));
         stringBuilder.append("\"title\": \"Result form\",\n");
+
+        stringBuilder.append("\t".repeat(level));
         stringBuilder.append("\"type\": \"object\",\n");
+
+        stringBuilder.append("\t".repeat(level));
         stringBuilder.append("\"properties\": {\n");
+        level++;
 
         Iterator<Entry<String, JsonNode>> iter = json.fields();
-        int level = 1;
 
         while (iter.hasNext()) {
             Entry<String, JsonNode> entryJson = iter.next();
@@ -34,6 +41,8 @@ public class JsonUtils {
             }
         }
 
+        level--;
+        stringBuilder.append("\t".repeat(level));
         stringBuilder.append("}\n");
         stringBuilder.append("}");
 

@@ -15,7 +15,7 @@ public class JsonSchemaController {
     public ResponseEntity<JsonNode> generate(@RequestBody JsonNode data) {
         JsonNode jsonSchema = JsonUtils.createJsonSchema(data);
         if (jsonSchema == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(jsonSchema, HttpStatus.OK);
     }
