@@ -60,6 +60,8 @@ public class JsonUtils {
                         entryJson.getValue().getNodeType().toString().toLowerCase(), level + 2);
 
                 stringBuilder.append("\t".repeat(level + 1));
+            } else if (entryJson.getValue().isArray()) {
+                appendArrayData(stringBuilder, entryJson.getKey(), entryJson.getValue(), level + 1);
             }
             if (iter.hasNext()) {
                 stringBuilder.append("},\n");
@@ -73,6 +75,77 @@ public class JsonUtils {
     }
 
     private static void appendSimpleData(StringBuilder stringBuilder, String field, JsonNode value, int level) {
+        appendDefaultBody(stringBuilder, field, value, level);
+
+        level++;
+
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+        stringBuilder.append("\"default\": \"")
+                .append(value.asText())
+                .append("\"\n");
+
+        level--;
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+    }
+
+    private static void appendArrayData(StringBuilder stringBuilder, String field, JsonNode value, int level) {
+
+        appendDefaultBody(stringBuilder, field, value, level);
+
+        level++;
+
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+        stringBuilder.append("\"items\": {\n");
+
+        JsonNode valueArray = value.iterator().next();
+
+        level++;
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+        stringBuilder.append("\"type\": \"")
+                .append(valueArray.getNodeType().toString().toLowerCase())
+                .append("\"");
+
+        if (valueArray.getNodeType().toString().equalsIgnoreCase("object")) {
+            stringBuilder.append(",\n");
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("\"properties\": {\n");
+
+            level++;
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("\"title\": \"")
+                    .append(valueArray.fields().next().getKey())
+                    .append("\",\n");
+
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("\"")
+                    .append(valueArray.fields().next().getKey())
+                    .append("\": {\n");
+
+            level++;
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("\"type\": \"")
+                    .append(valueArray.fields().next().getValue().getNodeType().toString().toLowerCase())
+                    .append("\"\n");
+
+            level--;
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("}");
+
+            level--;
+            stringBuilder.append("\t".repeat(level));
+            stringBuilder.append("}");
+        }
+        stringBuilder.append("\n");
+
+        level--;
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+        stringBuilder.append("}\n");
+
+        level--;
+        stringBuilder.append("\t".repeat(Math.max(0, level)));
+    }
+
+    private static void appendDefaultBody(StringBuilder stringBuilder, String field, JsonNode value, int level) {
         stringBuilder.append("\t".repeat(Math.max(0, level)));
         stringBuilder.append("\"")
                 .append(field)
@@ -89,13 +162,5 @@ public class JsonUtils {
         stringBuilder.append("\"type\": \"")
                 .append(value.getNodeType().toString().toLowerCase())
                 .append("\",\n");
-
-        stringBuilder.append("\t".repeat(Math.max(0, level)));
-        stringBuilder.append("\"default\": \"")
-                .append(value.asText())
-                .append("\"\n");
-
-        level--;
-        stringBuilder.append("\t".repeat(Math.max(0, level)));
     }
 }
