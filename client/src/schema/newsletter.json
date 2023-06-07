@@ -1,0 +1,31 @@
+{
+  "title": "Result form",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First name",
+      "default": "Sergey"
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last name"
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age"
+    },
+    "bio": {
+      "type": "string",
+      "title": "Bio"
+    },
+    "password": {
+      "type": "string",
+      "title": "Password"
+    },
+    "telephone": {
+      "type": "string",
+      "title": "Telephone"
+    }
+  }
+}
